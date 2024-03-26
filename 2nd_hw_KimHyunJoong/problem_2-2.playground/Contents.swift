@@ -146,9 +146,15 @@ print(names.first ?? "No name found")
 
 //문제 2: if-let을 사용한 옵셔널 바인딩
 //문자열 옵셔널 optionalString에 값이 있을 수도, 없을 수도 있습니다. 값이 있으면 "The string is:"와 함께 값을 출력하세요. 값이 없으면 "The string is nil."을 출력하세요.
-//var optionalString: String? = "Hello"
+var optionalString: String? = "Hello"
 
-// 여기에 코드를 작성하세요.
+if let string = optionalString {
+    print("The string is: \(string)")
+}
+
+else {
+    print("The string is nil.")
+}
 
 // ---------- Mark : Optional if-let 사용  ----------------
 
