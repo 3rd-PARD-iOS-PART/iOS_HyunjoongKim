@@ -45,6 +45,11 @@ printPositiveNumber(-3) // "The number is not positive." 출력해야 함
 
 //문제 1: 연관값 사용하기
 //"책(Book)", "비디오(Video)", "음악(Music)" 등의 미디어 아이템을 나타내는 열거형을 작성하세요. 각 아이템에는 타이틀(title)이라는 연관값을 부여합니다.
+enum media {
+    case book(title: String)
+    case video(title: String)
+    case music(title: String)
+}
 
 // ---------- Mark : enum 연관값  ----------------
 
