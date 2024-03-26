@@ -136,8 +136,9 @@ func checkLoginStatus(_ status: Bool, _ userName: String?) {
 
 //문제 1: Nil-coalescing 연산자 ?? 사용하기
 //문자열 배열 names에 이름이 몇 개 들어있습니다. 배열의 첫 번째 요소를 출력하세요. 만약 배열이 비어 있다면 "No name found"를 출력하세요.
-//var names: [String] = ["Alice", "Bob", "Charlie"]
+var names: [String] = ["Alice", "Bob", "Charlie"]
 
+print(names.first ?? "No name found")
 
 
 
