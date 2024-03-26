@@ -5,7 +5,19 @@ import Foundation
 // ---------- Mark : if문  ----------------
 //문제 1: if 문
 //문자열 변수 fruit이 "apple", "banana", "cherry" 중 하나일 때, 해당하는 과일을 출력하세요.
-//var fruit = "apple" // 이 값을 "banana"나 "cherry"로 바꿔보세요.
+var fruit = "banana" // 이 값을 "banana"나 "cherry"로 바꿔보세요.
+
+if fruit == "apple" {
+    print("apple")
+}
+
+else if fruit == "banana" {
+    print("banana")
+}
+
+else if fruit == "cherry" {
+    print("cherry")
+}
 
 // ---------- Mark : if문  ----------------
 
