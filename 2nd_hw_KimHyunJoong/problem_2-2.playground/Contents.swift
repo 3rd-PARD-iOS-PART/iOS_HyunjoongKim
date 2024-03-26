@@ -26,19 +26,19 @@ else if fruit == "cherry" {
 //문제 2: guard 문
 //함수 printPositiveNumber를 작성하세요. 이 함수는 하나의 정수 인자를 받아, 그 값이 양수일 경우에만 그 값을 출력합니다. 만약 값이 양수가 아니라면, "The number is not positive."를 출력합니다.
 //
-//func printPositiveNumber(_ number: Int) {
-//    // 여기에 코드를 작성하세요.
-//}
+func printPositiveNumber(_ number: Int) {
+    guard number > 0 else {
+        print("The number is not positive.")
+        return
+    }
+    print(number)
+}
 //
-//printPositiveNumber(5)  // 5를 출력해야 함
-//printPositiveNumber(-3) // "The number is not positive." 출력해야 함
+printPositiveNumber(5)  // 5를 출력해야 함
+printPositiveNumber(-3) // "The number is not positive." 출력해야 함
 
 
 // ---------- Mark : guard문  ----------------
-
-//func printPositiveNumber(_ number: Int) {
-//    // 여기에 코드를 작성하세요.
-//}
 
 
 // ---------- Mark : enum 연관값  ----------------
