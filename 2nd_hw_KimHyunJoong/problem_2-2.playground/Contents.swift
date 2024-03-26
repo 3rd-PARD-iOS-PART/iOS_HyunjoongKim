@@ -97,6 +97,30 @@ func printArea(_ radius: Double) -> Double {
 //문제: 로그인 상태 확인
 //함수 checkLoginStatus를 작성해보세요. 이 함수는 로그인 상태를 나타내는 Bool 변수와 사용자 이름을 나타내는 String? 변수를 받습니다. 만약 로그인 상태가 true이면 사용자 이름을 출력하고, false이면 "로그인이 필요합니다."를 출력하세요. 사용자 이름이 nil이라면 "알 수 없는 사용자"를 출력하세요.
 
+func checkLoginStatus(_ status: Bool, _ userName: String?) {
+    if status {
+        if let name = userName {
+            print(name)
+        } else {
+            print("알 수 없는 사용자")
+        }
+    } else {
+        print("로그인이 필요합니다.")
+    }
+}
+
+//func checkLoginStatus(_ status: Bool, _ userName: String?) {
+//    if status {
+//        guard let name = userName else {
+//            print("알 수 없는 사용자")
+//            return
+//        }
+//        print(name)
+//    } else {
+//        print("로그인이 필요합니다.")
+//    }
+//}
+
 // ---------- Mark : function If문사용   ----------------
 
 
