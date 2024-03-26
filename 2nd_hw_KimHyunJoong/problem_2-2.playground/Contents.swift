@@ -72,6 +72,9 @@ enum week: Int {
     case saturday = 7
 }
 
+let day: week = .friday
+print(day.rawValue)
+
 
 
 // ---------- Mark : function overloading  ----------------
@@ -86,6 +89,9 @@ func printArea(_ width: Double, _ height: Double) -> Double {
 func printArea(_ radius: Double) -> Double {
     return radius * radius * 3.14
 }
+
+print(printArea(3, 4))
+print(printArea(2))
 
 
 // ---------- Mark : function overloading  ----------------
@@ -108,6 +114,11 @@ func checkLoginStatus(_ status: Bool, _ userName: String?) {
         print("로그인이 필요합니다.")
     }
 }
+
+print(checkLoginStatus(true, "HJ0905"))
+print(checkLoginStatus(false, "HJ0905"))
+print(checkLoginStatus(true, nil))
+print(checkLoginStatus(false, nil))
 
 //func checkLoginStatus(_ status: Bool, _ userName: String?) {
 //    if status {
