@@ -79,6 +79,14 @@ enum week: Int {
 //문제 1: 함수 오버로딩 (Overloading)
 //printArea라는 함수를 작성해보세요. 이 함수는 사각형의 가로와 세로 길이를 받아 면적을 출력하고, 또 다른 버전의 함수는 원의 반지름을 받아 면적을 출력합니다.
 
+func printArea(_ width: Double, _ height: Double) -> Double {
+    return width * height
+}
+
+func printArea(_ radius: Double) -> Double {
+    return radius * radius * 3.14
+}
+
 
 // ---------- Mark : function overloading  ----------------
 //
