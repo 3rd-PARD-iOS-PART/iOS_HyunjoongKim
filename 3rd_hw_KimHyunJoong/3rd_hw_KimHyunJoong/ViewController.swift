@@ -40,7 +40,7 @@ class ViewController: UIViewController {
        return tableView
    }()
    
-   let sections = ["Popular on Netflix", "Trending Now", "Top 10 Nigeria Today"]
+   let sections = ["Popular on Netflix", "Trending Now", "Top 10 Nigeria Today", "My List", "African Movies", "Nollywood Movies & TV"]
    
    override func viewDidLoad() {
        super.viewDidLoad()
