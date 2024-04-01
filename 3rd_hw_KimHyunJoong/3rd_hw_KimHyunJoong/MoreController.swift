@@ -16,7 +16,6 @@ class MoreController: UIViewController{
     }
     
     func setUI(){
-        
         let image: UIImageView = {
             let image1 = UIImageView()
             // systemImage의 크기를 조정하기 위해서는 symbolConfiguration을 지정해야 한다.

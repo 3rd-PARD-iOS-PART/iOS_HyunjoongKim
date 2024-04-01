@@ -1,7 +1,10 @@
+// 김현중
+
 import UIKit
 
 class HomeViewController: UIViewController {
    
+    // 로고 이미지 뷰 생성
     let logoImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "netflix_logo"))
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -10,6 +13,7 @@ class HomeViewController: UIViewController {
         return imageView
     }()
    
+    // "TV Shows" 버튼 생성
     let tvShowsButton: UIButton = {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -19,6 +23,7 @@ class HomeViewController: UIViewController {
         return button
     }()
    
+    // "Movies" 버튼 생성
     let moviesButton: UIButton = {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -28,6 +33,7 @@ class HomeViewController: UIViewController {
         return button
     }()
    
+    // "My List" 버튼 생성
     let myListButton: UIButton = {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -37,14 +43,17 @@ class HomeViewController: UIViewController {
         return button
     }()
    
+    // 메인 테이블 뷰 생성
     let mainTableView: UITableView = {
         let tableView = UITableView()
+        //전체화면 활용
         tableView.contentInsetAdjustmentBehavior = .never
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.backgroundColor = .clear
         return tableView
    }()
    
+    // cell들의 section의 title들을 배열에 선언
     let sections = ["Popular on Netflix", "Trending Now", "Top 10 Nigeria Today", "My List", "African Movies", "Nollywood Movies & TV"]
    
     override func viewDidLoad() {
@@ -56,12 +65,15 @@ class HomeViewController: UIViewController {
         setupConstraints()
        
         mainTableView.backgroundColor = .black
+        // 구분선 색
         mainTableView.separatorColor = .clear
+        // 스크롤 인디케이터 하얀색
         mainTableView.indicatorStyle = .white
         navigationController?.setNavigationBarHidden(true, animated: false)
         mainTableView.register(FeaturedSectionCell.self, forCellReuseIdentifier: "FeaturedSectionCell")
     }
    
+    // 뷰 계층 구조 설정
     func setupViews() {
         view.addSubview(mainTableView)
         mainTableView.addSubview(logoImageView)
@@ -74,6 +86,7 @@ class HomeViewController: UIViewController {
         mainTableView.register(MovieSectionCell.self, forCellReuseIdentifier: "MovieSectionCell")
     }
    
+    // 오토레이아웃 설정
     func setupConstraints() {
         NSLayoutConstraint.activate([
             mainTableView.topAnchor.constraint(equalTo: view.topAnchor),
@@ -99,19 +112,24 @@ class HomeViewController: UIViewController {
  }
 
 extension HomeViewController: UITableViewDataSource {
+    // 섹션 개수 반환
     func numberOfSections(in tableView: UITableView) -> Int {
         return sections.count
     }
    
+    // 각 섹션의 행 개수 변환
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
    
+    // 각 섹션 셀 생성
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
+            // 첫 번째 섹션은 맨 위의 사진의 섹션 셀 반환
             let cell = tableView.dequeueReusableCell(withIdentifier: "FeaturedSectionCell", for: indexPath) as! FeaturedSectionCell
             return cell
         } else {
+            // 나머지 섹션들은 영화 섹션 셀 반환
             let cell = tableView.dequeueReusableCell(withIdentifier: "MovieSectionCell", for: indexPath) as! MovieSectionCell
             cell.sectionLabel.text = sections[indexPath.section - 1]
             cell.data = MockData.modeling[indexPath.section - 1]
@@ -121,10 +139,13 @@ extension HomeViewController: UITableViewDataSource {
 }
 
 extension HomeViewController: UITableViewDelegate {
+    // 각 행의 높이 반환
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 0 {
+            // 첫 번째 섹션의 높이
             return 500
         } else {
+            // 나머지 섹션의 높이
             return 240
         }
     }
@@ -144,9 +165,7 @@ class FeaturedSectionCell: UITableViewCell {
         featuredImageView.backgroundColor = .black
         view.addSubview(featuredImageView)
         
-  
-       
-        
+        // "MyList" 버튼 생성
         let button1: UIButton = {
             // configuration: Button안 image, title 공존 및 기타 설정을 위함
             var configuration = UIButton.Configuration.filled()
@@ -155,7 +174,9 @@ class FeaturedSectionCell: UITableViewCell {
             configuration.image = UIImage(named: "plus")
             configuration.imagePadding = 1
             configuration.titlePadding = 1
+            // 이미지를 타이틀 위에 배치
             configuration.imagePlacement = .top
+            // 버튼 내용 삽입 여백 설정
             configuration.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
                 
             let btnMyList = UIButton(configuration: configuration)
@@ -166,6 +187,7 @@ class FeaturedSectionCell: UITableViewCell {
             return btnMyList
         }()
             
+        // "Play" 버튼 생성
         let button2: UIButton = {
             var configuration = UIButton.Configuration.filled()
             configuration.background.backgroundColor = UIColor.lightGray
@@ -183,6 +205,7 @@ class FeaturedSectionCell: UITableViewCell {
             return btnPlay
         }()
             
+        // "Info" 버튼 생성
         let button3: UIButton = {
             var configuration = UIButton.Configuration.filled()
             configuration.background.backgroundColor = .clear
@@ -267,6 +290,7 @@ class MovieSectionCell: UITableViewCell {
     
     var data: [MockData] = [] {
         didSet {
+            // 데이터가 변경되면 컬렉션 뷰 리로드
             movieCollectionView.reloadData()
         }
     }
@@ -318,12 +342,15 @@ class MovieSectionCell: UITableViewCell {
 }
 
 extension MovieSectionCell: UICollectionViewDataSource {
+    // 섹션별 항목 개수 반환
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) ->  Int {
         return data.count
     }
    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        // 재사용 가능한 셀 가져오기
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MovieCollectionCell", for: indexPath) as! MovieCollectionCell
+        // 셀에 데이터 전달하여 구성
         cell.configure(with: data[indexPath.item])
         return cell
     }
@@ -331,6 +358,7 @@ extension MovieSectionCell: UICollectionViewDataSource {
 
 extension MovieSectionCell: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout:  UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        // 셀 크기 설정
         return CGSize(width: 120, height: 180)
     }
 }
@@ -364,6 +392,7 @@ class MovieCollectionCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
    
+    // 데이터를 전달받아 포스터 이미지 뷰 구성
     func configure(with data: MockData) {
         posterImageView.image = UIImage(named: data.imageName)
     }
