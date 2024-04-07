@@ -54,7 +54,7 @@ class HomeViewController: UIViewController {
    }()
    
     // cell들의 section의 title들을 배열에 선언
-    let sections = ["Popular on Netflix", "Trending Now", "Top 10 Nigeria Today", "My List", "African Movies", "Nollywood Movies & TV", "sdafasdf"]
+    let sections = ["Popular on Netflix", "Trending Now", "Top 10 Nigeria Today", "My List", "African Movies", "Nollywood Movies & TV"]
    
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -125,14 +125,37 @@ extension HomeViewController: UITableViewDataSource {
     // 각 섹션 셀 생성
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
-            // 첫 번째 섹션은 맨 위의 사진의 섹션 셀 반환
             let cell = tableView.dequeueReusableCell(withIdentifier: "FeaturedSectionCell", for: indexPath) as! FeaturedSectionCell
             return cell
         } else {
-            // 나머지 섹션들은 영화 섹션 셀 반환
             let cell = tableView.dequeueReusableCell(withIdentifier: "MovieSectionCell", for: indexPath) as! MovieSectionCell
             cell.sectionLabel.text = sections[indexPath.section - 1]
-            cell.data = MockData.modeling[indexPath.section - 1]
+            
+            // MovieData에서 영화 데이터를 가져오는 비동기 작업 수행
+            MovieData.fetchMovies { result in
+                switch result {
+                case .success(let movieData):
+                    // 성공적으로 영화 데이터를 가져온 경우
+                    // 현재 섹션 인덱스 계산 (첫 번째 섹션은 제외하므로 -1)
+                    let sectionIndex = indexPath.section - 1
+                    // 해당 섹션의 시작 인덱스 계산 (섹션 인덱스 * 5를 영화 데이터 개수로 나눈 나머지)
+                    let startIndex = sectionIndex * 5 % movieData.count
+                    // 해당 섹션의 끝 인덱스 계산 (시작 인덱스 + 5를 영화 데이터 개수로 나눈 나머지)
+                    let endIndex = (startIndex + 5) % movieData.count
+                    
+                    // 섹션에 표시할 영화 데이터 선택
+                    // 끝 인덱스가 시작 인덱스보다 큰 경우, 시작 인덱스부터 끝 인덱스까지의 영화 데이터 선택
+                    // 그렇지 않은 경우, 시작 인덱스부터 영화 데이터 끝까지와 0부터 끝 인덱스까지의 영화 데이터를 합쳐서 선택
+                    let sectionMovies = endIndex > startIndex ? Array(movieData[startIndex..<endIndex]) : Array(movieData[startIndex..<movieData.count] + movieData[0..<endIndex])
+                    // 메인 큐에서 셀의 데이터를 업데이트
+                    DispatchQueue.main.async {
+                        cell.data = sectionMovies
+                    }
+                case .failure(let error):
+                    print(error)
+                }
+            }
+            
             return cell
         }
     }
@@ -288,11 +311,21 @@ class MovieSectionCell: UITableViewCell {
         return label
     }()
     
-    var data: [MockData] = [] {
+    var data: [MovieData] = [] {
         didSet {
             // 데이터가 변경되면 컬렉션 뷰 리로드
             movieCollectionView.reloadData()
         }
+    }
+    
+    var sectionIndex: Int = 0
+    
+    func configure(with sectionIndex: Int, movies: [MovieData]) {
+        self.sectionIndex = sectionIndex
+        
+        let startIndex = sectionIndex * 5 % movies.count
+        let endIndex = (startIndex + 5) % movies.count
+        data = endIndex > startIndex ? Array(movies[startIndex..<endIndex]) : Array(movies[startIndex..<movies.count] + movies[0..<endIndex])
     }
    
     let movieCollectionView: UICollectionView = {
@@ -363,6 +396,24 @@ extension MovieSectionCell: UICollectionViewDelegateFlowLayout {
     }
 }
 
+extension UIImageView {
+    func downloadImage(from url: URL, contentMode mode: ContentMode = .scaleAspectFill) {
+        contentMode = mode
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            guard let httpURLResponse = response as? HTTPURLResponse, httpURLResponse.statusCode == 200,
+                  let mimeType = response?.mimeType, mimeType.hasPrefix("image"),
+                  let data = data, error == nil,
+                  let image = UIImage(data: data)
+            else { return }
+            
+            DispatchQueue.main.async {
+                self.image = image
+            }
+        }.resume()
+    }
+}
+
+
 class MovieCollectionCell: UICollectionViewCell {
    
     let posterImageView: UIImageView = {
@@ -393,7 +444,11 @@ class MovieCollectionCell: UICollectionViewCell {
     }
    
     // 데이터를 전달받아 포스터 이미지 뷰 구성
-    func configure(with data: MockData) {
-        posterImageView.image = UIImage(named: data.imageName)
+    func configure(with data: MovieData) {
+        let baseURL = "https://image.tmdb.org/t/p/w500"
+        let posterPath = data.posterPath
+        guard let posterURL = URL(string: baseURL + posterPath) else { return }
+        
+        posterImageView.downloadImage(from: posterURL)
     }
 }

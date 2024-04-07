@@ -54,7 +54,7 @@ class HomeViewController: UIViewController {
    }()
    
     // cell들의 section의 title들을 배열에 선언
-    let sections = ["Popular on Netflix", "Trending Now", "Top 10 Nigeria Today", "My List", "African Movies", "Nollywood Movies & TV"]
+    let sections = ["Popular on Netflix", "Trending Now", "Top 10 Nigeria Today", "My List", "African Movies", "Nollywood Movies & TV", "sdafasdf"]
    
     override func viewDidLoad() {
         super.viewDidLoad()
