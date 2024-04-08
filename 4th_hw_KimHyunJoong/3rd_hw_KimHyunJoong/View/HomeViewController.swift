@@ -54,7 +54,7 @@ class HomeViewController: UIViewController {
    }()
    
     // cell들의 section의 title들을 배열에 선언
-    let sections = ["Popular on Netflix", "Trending Now", "Top 10 Nigeria Today", "My List", "African Movies", "Nollywood Movies & TV"]
+    let sections = ["Now Playing Movies", "Popular Movies", "Top Rated Movies", "Upcoming Movies"]
    
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -114,7 +114,7 @@ class HomeViewController: UIViewController {
 extension HomeViewController: UITableViewDataSource {
     // 섹션 개수 반환
     func numberOfSections(in tableView: UITableView) -> Int {
-        return sections.count
+        return sections.count + 1 // Featured 섹션 포함
     }
    
     // 각 섹션의 행 개수 변환
@@ -131,25 +131,27 @@ extension HomeViewController: UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: "MovieSectionCell", for: indexPath) as! MovieSectionCell
             cell.sectionLabel.text = sections[indexPath.section - 1]
             
-            // MovieData에서 영화 데이터를 가져오는 비동기 작업 수행
-            MovieData.fetchMovies { result in
+            // 섹션에 따라 적절한 API 호출 메서드 선택
+            let fetchMoviesMethod: ((@escaping (Result<[MovieData], Error>) -> Void) -> Void)
+            switch indexPath.section {
+            case 1:
+                fetchMoviesMethod = MovieData.fetchNowPlayingMovies
+            case 2:
+                fetchMoviesMethod = MovieData.fetchPopularMovies
+            case 3:
+                fetchMoviesMethod = MovieData.fetchTopRatedMovies
+            case 4:
+                fetchMoviesMethod = MovieData.fetchMovies
+            default:
+                return cell
+            }
+            
+            // 선택된 API 호출 메서드를 사용하여 영화 데이터 가져오기
+            fetchMoviesMethod { result in
                 switch result {
                 case .success(let movieData):
-                    // 성공적으로 영화 데이터를 가져온 경우
-                    // 현재 섹션 인덱스 계산 (첫 번째 섹션은 제외하므로 -1)
-                    let sectionIndex = indexPath.section - 1
-                    // 해당 섹션의 시작 인덱스 계산 (섹션 인덱스 * 5를 영화 데이터 개수로 나눈 나머지)
-                    let startIndex = sectionIndex * 5 % movieData.count
-                    // 해당 섹션의 끝 인덱스 계산 (시작 인덱스 + 5를 영화 데이터 개수로 나눈 나머지)
-                    let endIndex = (startIndex + 5) % movieData.count
-                    
-                    // 섹션에 표시할 영화 데이터 선택
-                    // 끝 인덱스가 시작 인덱스보다 큰 경우, 시작 인덱스부터 끝 인덱스까지의 영화 데이터 선택
-                    // 그렇지 않은 경우, 시작 인덱스부터 영화 데이터 끝까지와 0부터 끝 인덱스까지의 영화 데이터를 합쳐서 선택
-                    let sectionMovies = endIndex > startIndex ? Array(movieData[startIndex..<endIndex]) : Array(movieData[startIndex..<movieData.count] + movieData[0..<endIndex])
-                    // 메인 큐에서 셀의 데이터를 업데이트
                     DispatchQueue.main.async {
-                        cell.data = sectionMovies
+                        cell.data = movieData
                     }
                 case .failure(let error):
                     print(error)

@@ -51,6 +51,98 @@ struct ApiCaller {
         // 데이터 요청 시작
         task.resume()
     }
+    func getNowPlayingMovies(completion: @escaping (Result<[Movie], Error>) -> Void) {
+        let endpoint = "\(baseURL)/movie/now_playing?api_key=\(apiKey)&language=en-US&page=1"
+                
+        guard let url = URL(string: endpoint) else {
+            completion(.failure(NetworkError.invalidURL))
+            return
+        }
+                
+        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+                
+            guard let data = data else {
+                completion(.failure(NetworkError.invalidData))
+                return
+            }
+                    
+            do {
+                let decoder = JSONDecoder()
+                let movieResponse = try decoder.decode(MovieResponse.self, from: data)
+                completion(.success(movieResponse.results))
+            } catch {
+                completion(.failure(error))
+            }
+        }
+        
+        task.resume()
+    }
+    
+    func getPopularMovies(completion: @escaping (Result<[Movie], Error>) -> Void) {
+        let endpoint = "\(baseURL)/movie/popular?api_key=\(apiKey)&language=en-US&page=1"
+            
+        guard let url = URL(string: endpoint) else {
+            completion(.failure(NetworkError.invalidURL))
+            return
+        }
+        
+        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+        
+            guard let data = data else {
+                completion(.failure(NetworkError.invalidData))
+                return
+            }
+        
+            do {
+                let decoder = JSONDecoder()
+                let movieResponse = try decoder.decode(MovieResponse.self, from: data)
+                completion(.success(movieResponse.results))
+            } catch {
+                completion(.failure(error))
+            }
+        }
+        
+        task.resume()
+    }
+    
+    func getTopRatedMovies(completion: @escaping (Result<[Movie], Error>) -> Void) {
+        let endpoint = "\(baseURL)/movie/top_rated?api_key=\(apiKey)&language=en-US&page=1"
+        
+        guard let url = URL(string: endpoint) else {
+            completion(.failure(NetworkError.invalidURL))
+            return
+        }
+    
+        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+        
+            guard let data = data else {
+                completion(.failure(NetworkError.invalidData))
+                return
+            }
+        
+            do {
+                let decoder = JSONDecoder()
+                let movieResponse = try decoder.decode(MovieResponse.self, from: data)
+                completion(.success(movieResponse.results))
+            } catch {
+                completion(.failure(error))
+            }
+        }
+            
+        task.resume()
+    }
 }
 
 // 영화 응답 데이터를 나타내는 구조체

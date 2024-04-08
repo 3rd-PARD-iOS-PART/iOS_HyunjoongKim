@@ -33,4 +33,45 @@ extension MovieData {
             }
         }
     }
+    static func fetchNowPlayingMovies(completion: @escaping (Result<[MovieData], Error>) -> Void) {
+        ApiCaller.shared.getNowPlayingMovies { result in
+            switch result {
+            case .success(let movies):
+                let movieData = movies.map { movie in
+                    MovieData(title: movie.title, posterPath: movie.posterPath ?? "")
+                }
+                completion(.success(movieData))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    static func fetchPopularMovies(completion: @escaping (Result<[MovieData], Error>) -> Void) {
+        ApiCaller.shared.getPopularMovies { result in
+            switch result {
+            case .success(let movies):
+                let movieData = movies.map { movie in
+                    MovieData(title: movie.title, posterPath: movie.posterPath ?? "")
+                }
+                completion(.success(movieData))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    static func fetchTopRatedMovies(completion: @escaping (Result<[MovieData], Error>) -> Void) {
+        ApiCaller.shared.getTopRatedMovies { result in
+            switch result {
+            case .success(let movies):
+                let movieData = movies.map { movie in
+                    MovieData(title: movie.title, posterPath: movie.posterPath ?? "")
+                }
+                completion(.success(movieData))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
 }
