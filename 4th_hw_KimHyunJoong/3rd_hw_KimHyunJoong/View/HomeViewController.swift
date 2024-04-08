@@ -446,11 +446,12 @@ class MovieCollectionCell: UICollectionViewCell {
     }
    
     // 데이터를 전달받아 포스터 이미지 뷰 구성
-    func configure(with data: MovieData) {
+    func configure(with movie: MovieData) {
         let baseURL = "https://image.tmdb.org/t/p/w500"
-        let posterPath = data.posterPath
-        guard let posterURL = URL(string: baseURL + posterPath) else { return }
         
-        posterImageView.downloadImage(from: posterURL)
+        if let posterPath = movie.posterPath {
+            let posterURL = URL(string: baseURL + posterPath)
+            posterImageView.downloadImage(from: posterURL!)
+        }
     }
 }

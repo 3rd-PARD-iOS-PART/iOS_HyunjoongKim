@@ -7,8 +7,17 @@
 import UIKit
 // MovieData 구조체 정의
 struct MovieData {
+    let backdropPath: String?
+    let genreIDs: [Int]
+    let id: Int
+    let originalLanguage: String
+    let originalTitle: String
+    let overview: String
+    let popularity: Double
+    let posterPath: String?
+    let releaseDate: String
     let title: String
-    let posterPath: String
+    let video: Bool
 }
 
 // MovieData 구조체의 확장
@@ -22,7 +31,19 @@ extension MovieData {
                 // 영화 데이터 가져오기 성공한 경우
                 // Movie 객체를 MovieData 객체로 매핑
                 let movieData = movies.map { movie in
-                    MovieData(title: movie.title, posterPath: movie.posterPath ?? "")
+                    MovieData(
+                        backdropPath: movie.backdropPath,
+                        genreIDs: movie.genreIDs,
+                        id: movie.id,
+                        originalLanguage: movie.originalLanguage,
+                        originalTitle: movie.originalTitle,
+                        overview: movie.overview,
+                        popularity: movie.popularity,
+                        posterPath: movie.posterPath,
+                        releaseDate: movie.releaseDate,
+                        title: movie.title,
+                        video: movie.video
+                    )
                 }
                 // 완료 핸들러에 성공 결과와 함께 MovieData 배열을 전달
                 completion(.success(movieData))
@@ -38,7 +59,19 @@ extension MovieData {
             switch result {
             case .success(let movies):
                 let movieData = movies.map { movie in
-                    MovieData(title: movie.title, posterPath: movie.posterPath ?? "")
+                    MovieData(
+                        backdropPath: movie.backdropPath,
+                        genreIDs: movie.genreIDs,
+                        id: movie.id,
+                        originalLanguage: movie.originalLanguage,
+                        originalTitle: movie.originalTitle,
+                        overview: movie.overview,
+                        popularity: movie.popularity,
+                        posterPath: movie.posterPath,
+                        releaseDate: movie.releaseDate,
+                        title: movie.title,
+                        video: movie.video
+                    )
                 }
                 completion(.success(movieData))
             case .failure(let error):
@@ -52,7 +85,19 @@ extension MovieData {
             switch result {
             case .success(let movies):
                 let movieData = movies.map { movie in
-                    MovieData(title: movie.title, posterPath: movie.posterPath ?? "")
+                    MovieData(
+                        backdropPath: movie.backdropPath,
+                        genreIDs: movie.genreIDs,
+                        id: movie.id,
+                        originalLanguage: movie.originalLanguage,
+                        originalTitle: movie.originalTitle,
+                        overview: movie.overview,
+                        popularity: movie.popularity,
+                        posterPath: movie.posterPath,
+                        releaseDate: movie.releaseDate,
+                        title: movie.title,
+                        video: movie.video
+                    )
                 }
                 completion(.success(movieData))
             case .failure(let error):
@@ -66,7 +111,19 @@ extension MovieData {
             switch result {
             case .success(let movies):
                 let movieData = movies.map { movie in
-                    MovieData(title: movie.title, posterPath: movie.posterPath ?? "")
+                    MovieData(
+                        backdropPath: movie.backdropPath,
+                        genreIDs: movie.genreIDs,
+                        id: movie.id,
+                        originalLanguage: movie.originalLanguage,
+                        originalTitle: movie.originalTitle,
+                        overview: movie.overview,
+                        popularity: movie.popularity,
+                        posterPath: movie.posterPath,
+                        releaseDate: movie.releaseDate,
+                        title: movie.title,
+                        video: movie.video
+                    )
                 }
                 completion(.success(movieData))
             case .failure(let error):
