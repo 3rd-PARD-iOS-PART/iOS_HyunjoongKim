@@ -13,6 +13,15 @@ class SearchViewController: UIViewController {
         let searchBar = UISearchBar()
         searchBar.translatesAutoresizingMaskIntoConstraints = false
         searchBar.placeholder = "Search for a show, movie, genre, e.t.c."
+        searchBar.searchBarStyle = .minimal
+        searchBar.searchTextField.backgroundColor = .clear
+        searchBar.searchTextField.textColor = .white
+        searchBar.searchTextField.leftView?.tintColor = .gray
+        searchBar.searchTextField.attributedPlaceholder = NSAttributedString(string: "Search for a show, movie, genre, e.t.c.", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray])
+        searchBar.searchTextField.layer.cornerRadius = 10
+        searchBar.searchTextField.clipsToBounds = true
+        searchBar.layer.borderWidth = 0
+        searchBar.layer.borderColor = .none
         return searchBar
     }()
     
@@ -20,7 +29,7 @@ class SearchViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Top Searches"
-        label.font = UIFont.boldSystemFont(ofSize: 20)
+        label.font = UIFont.boldSystemFont(ofSize: 30)
         label.textColor = .white
         return label
     }()
@@ -47,28 +56,35 @@ class SearchViewController: UIViewController {
         tableView.delegate = self
         
         fetchPopularMovies()
+        setupTableViewHeader()
     }
-    
+      
     func setupViews() {
         view.addSubview(searchBar)
-        view.addSubview(topSearchesLabel)
         view.addSubview(tableView)
     }
-    
+      
     func setupConstraints() {
         NSLayoutConstraint.activate([
             searchBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             
-            topSearchesLabel.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 20),
-            topSearchesLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            
-            tableView.topAnchor.constraint(equalTo: topSearchesLabel.bottomAnchor, constant: 10),
+            tableView.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 20),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
+    }
+      
+    func setupTableViewHeader() {
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 50))
+        headerView.backgroundColor = .black
+          
+        topSearchesLabel.frame = CGRect(x: 16, y: 0, width: headerView.bounds.width - 32, height: headerView.bounds.height)
+        headerView.addSubview(topSearchesLabel)
+          
+        tableView.tableHeaderView = headerView
     }
     
     func fetchPopularMovies() {
@@ -95,11 +111,22 @@ extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TopSearchCell", for: indexPath) as! TopSearchCell
         let movie = popularMovies[indexPath.row]
         cell.configure(with: movie)
+        cell.selectionStyle = .none
+        cell.backgroundColor = .darkGray
+        
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 120
+        return 100
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let verticalPadding: CGFloat = 5
+        let maskLayer = CALayer()
+        maskLayer.backgroundColor = UIColor.black.cgColor
+        maskLayer.frame = CGRect(x: cell.bounds.origin.x, y: cell.bounds.origin.y, width: cell.bounds.width, height: cell.bounds.height).insetBy(dx: 0, dy: verticalPadding/2)
+        cell.layer.mask = maskLayer
     }
 }
 
@@ -121,6 +148,19 @@ class TopSearchCell: UITableViewCell {
         return label
     }()
     
+    let button: UIButton = {
+        var configuration = UIButton.Configuration.filled()
+        configuration.background.backgroundColor = .clear
+        configuration.image = UIImage(named: "playCircle")
+        configuration.imagePadding = 15
+        configuration.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
+        configuration.baseForegroundColor = .black
+            
+        let btnPlay = UIButton(configuration: configuration)
+        btnPlay.translatesAutoresizingMaskIntoConstraints = false
+        return btnPlay
+    }()
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
@@ -128,6 +168,7 @@ class TopSearchCell: UITableViewCell {
         
         contentView.addSubview(posterImageView)
         contentView.addSubview(titleLabel)
+        contentView.addSubview(button)
         
         setupConstraints()
     }
@@ -138,14 +179,17 @@ class TopSearchCell: UITableViewCell {
     
     func setupConstraints() {
         NSLayoutConstraint.activate([
-            posterImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
-            posterImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            posterImageView.widthAnchor.constraint(equalToConstant: 80),
+            posterImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            posterImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            posterImageView.widthAnchor.constraint(equalToConstant: 180),
             posterImageView.heightAnchor.constraint(equalToConstant: 100),
             
-            titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
+            titleLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             titleLabel.leadingAnchor.constraint(equalTo: posterImageView.trailingAnchor, constant: 16),
-            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16)
+            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -45),
+            
+            button.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            button.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -5),
         ])
     }
     
