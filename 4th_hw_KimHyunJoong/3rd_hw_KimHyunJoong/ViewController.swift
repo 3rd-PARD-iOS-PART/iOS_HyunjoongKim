@@ -39,12 +39,14 @@ class ViewController: UITabBarController {
     func setTabBar() {
         // 각 탭에 해당하는 뷰 컨트롤러 생성
         let vc1 = UINavigationController(rootViewController: HomeViewController())
-        let vc2 = UINavigationController(rootViewController: SearchViewController())
+        let vc2 = SearchViewController()
         let vc3 = UINavigationController(rootViewController: ComingController())
         let vc4 = UINavigationController(rootViewController: DownloadController())
         let vc5 = UINavigationController(rootViewController: MoreController())
         
-        self.viewControllers = [vc1, vc2, vc3, vc4, vc5]
+        let searchNavigationController = UINavigationController(rootViewController: vc2)
+        
+        self.viewControllers = [vc1, searchNavigationController, vc3, vc4, vc5]
         
         // 탭 바의 선택된 아이템 색상을 흰색으로 설정
         self.tabBar.tintColor = .white
