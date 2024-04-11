@@ -42,6 +42,7 @@ class ComingController: UIViewController {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         
+        // NavigationBar item constraint 조정
         NSLayoutConstraint.activate([
             imageView.leadingAnchor.constraint(equalTo: titleView.leadingAnchor),
             imageView.centerYAnchor.constraint(equalTo: titleView.centerYAnchor),
