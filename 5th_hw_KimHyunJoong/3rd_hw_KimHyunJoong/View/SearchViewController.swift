@@ -144,6 +144,19 @@ extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
         maskLayer.frame = CGRect(x: cell.bounds.origin.x, y: cell.bounds.origin.y, width: cell.bounds.width, height: cell.bounds.height).insetBy(dx: 0, dy: verticalPadding/2)
         cell.layer.mask = maskLayer
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let movie = filteredMovies[indexPath.row]
+        
+        let detailViewController = MovieDetailViewController()
+        detailViewController.movie = movie
+        
+        // MovieDetailViewController의 모달 스타일을 설정
+        detailViewController.modalPresentationStyle = .overCurrentContext
+        
+        // MovieDetailViewController를 모달로 표시
+        present(detailViewController, animated: true, completion: nil)
+    }
 }
 
 class TopSearchCell: UITableViewCell {
