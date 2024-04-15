@@ -28,6 +28,14 @@ class MovieDetailViewController: UIViewController {
         return button
     }()
     
+    let airPlayButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.tintColor = .white
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(UIImage(named: "detailAirPlay"), for: .normal)
+        return button
+    }()
+    
     let titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -45,14 +53,20 @@ class MovieDetailViewController: UIViewController {
         return label
     }()
     
-    let playButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Play", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = .red
-        button.layer.cornerRadius = 5
-        return button
+    let playButton: UIImageView = {
+        let imageView = UIImageView(image: UIImage(named: "detailPlayButton"))
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.layer.cornerRadius = 10
+        imageView.clipsToBounds = true
+        return imageView
+    }()
+
+    let downloadButton: UIImageView = {
+        let imageView = UIImageView(image: UIImage(named: "detailDownloadButton"))
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.layer.cornerRadius = 10
+        imageView.clipsToBounds = true
+        return imageView
     }()
     
     let netflixLogoImageView: UIImageView = {
@@ -72,16 +86,6 @@ class MovieDetailViewController: UIViewController {
          imageView.translatesAutoresizingMaskIntoConstraints = false
          return imageView
      }()
-     
-     let downloadButton: UIButton = {
-         let button = UIButton(type: .system)
-         button.translatesAutoresizingMaskIntoConstraints = false
-         button.setTitle("Download", for: .normal)
-         button.setTitleColor(.white, for: .normal)
-         button.backgroundColor = .systemBlue
-         button.layer.cornerRadius = 5
-         return button
-     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -90,6 +94,7 @@ class MovieDetailViewController: UIViewController {
         
         view.addSubview(posterImageView)
         view.addSubview(closeButton)
+        view.addSubview(airPlayButton)
         view.addSubview(titleLabel)
         view.addSubview(overviewLabel)
         view.addSubview(playButton)
@@ -110,46 +115,53 @@ class MovieDetailViewController: UIViewController {
             posterImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             posterImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             posterImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            posterImageView.heightAnchor.constraint(equalToConstant: 300),
+            posterImageView.heightAnchor.constraint(equalToConstant: 215),
             
-            titleLabel.topAnchor.constraint(equalTo: posterImageView.bottomAnchor, constant: 16),
-            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            
-            overviewLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
-            overviewLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            overviewLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            
-            netflixLogoImageView.topAnchor.constraint(equalTo: posterImageView.bottomAnchor, constant: 16),
-            netflixLogoImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            netflixLogoImageView.widthAnchor.constraint(equalToConstant: 100),
+            netflixLogoImageView.topAnchor.constraint(equalTo: posterImageView.bottomAnchor, constant: 5),
+            netflixLogoImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            netflixLogoImageView.widthAnchor.constraint(equalToConstant: 30),
             netflixLogoImageView.heightAnchor.constraint(equalToConstant: 30),
             
             seriesImageView.centerYAnchor.constraint(equalTo: netflixLogoImageView.centerYAnchor),
-            seriesImageView.leadingAnchor.constraint(equalTo: netflixLogoImageView.trailingAnchor, constant: 8),
-            seriesImageView.widthAnchor.constraint(equalToConstant: 60),
-            seriesImageView.heightAnchor.constraint(equalToConstant: 30),
+            seriesImageView.leadingAnchor.constraint(equalTo: netflixLogoImageView.trailingAnchor, constant: 2),
+            seriesImageView.widthAnchor.constraint(equalToConstant: 50),
+            seriesImageView.heightAnchor.constraint(equalToConstant: 10),
             
-            titleLabel.topAnchor.constraint(equalTo: netflixLogoImageView.bottomAnchor, constant: 16),
+            titleLabel.topAnchor.constraint(equalTo: netflixLogoImageView.bottomAnchor, constant: 1),
+            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 7),
+            titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             
             barImageView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
-            barImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            barImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            barImageView.heightAnchor.constraint(equalToConstant: 30),
+            barImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 7),
+            barImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -140),
+            barImageView.heightAnchor.constraint(equalToConstant: 15),
+            barImageView.widthAnchor.constraint(equalToConstant: 15),
             
             playButton.topAnchor.constraint(equalTo: barImageView.bottomAnchor, constant: 16),
+            playButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            playButton.widthAnchor.constraint(equalToConstant: 400),
+            playButton.heightAnchor.constraint(equalToConstant: 40),
             
-            downloadButton.topAnchor.constraint(equalTo: playButton.bottomAnchor, constant: 16),
+            downloadButton.topAnchor.constraint(equalTo: playButton.bottomAnchor, constant: 8),
             downloadButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            downloadButton.widthAnchor.constraint(equalToConstant: 120),
-            downloadButton.heightAnchor.constraint(equalToConstant: 40)
+            downloadButton.widthAnchor.constraint(equalToConstant: 400),
+            downloadButton.heightAnchor.constraint(equalToConstant: 40),
+            
+            overviewLabel.topAnchor.constraint(equalTo: downloadButton.bottomAnchor, constant: 8),
+            overviewLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 7),
+            overviewLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -7)
         ])
         
         NSLayoutConstraint.activate([
             closeButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
             closeButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             closeButton.widthAnchor.constraint(equalToConstant: 24),
-            closeButton.heightAnchor.constraint(equalToConstant: 24)
+            closeButton.heightAnchor.constraint(equalToConstant: 24),
+            
+            airPlayButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
+            airPlayButton.trailingAnchor.constraint(equalTo: closeButton.leadingAnchor, constant: -8),
+            airPlayButton.widthAnchor.constraint(equalToConstant: 24),
+            airPlayButton.heightAnchor.constraint(equalToConstant: 24),
         ])
     }
     

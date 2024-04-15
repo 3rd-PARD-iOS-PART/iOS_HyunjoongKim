@@ -150,11 +150,9 @@ extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
         
         let detailViewController = MovieDetailViewController()
         detailViewController.movie = movie
+        detailViewController.modalPresentationStyle = .overFullScreen
+        detailViewController.modalTransitionStyle = .coverVertical
         
-        // MovieDetailViewController의 모달 스타일을 설정
-        detailViewController.modalPresentationStyle = .overCurrentContext
-        
-        // MovieDetailViewController를 모달로 표시
         present(detailViewController, animated: true, completion: nil)
     }
 }
