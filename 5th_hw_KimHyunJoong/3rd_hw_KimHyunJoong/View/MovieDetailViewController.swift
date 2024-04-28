@@ -44,10 +44,19 @@ class MovieDetailViewController: UIViewController {
         return label
     }()
     
+    let releaseDateLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.boldSystemFont(ofSize: 15)
+        label.textColor = .white
+        label.text = "S5:E10 Nothing Remains The Same"
+        return label
+    }()
+    
     let overviewLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 16)
+        label.font = UIFont.systemFont(ofSize: 12)
         label.textColor = .white
         label.numberOfLines = 0
         return label
@@ -87,6 +96,71 @@ class MovieDetailViewController: UIViewController {
          return imageView
      }()
     
+    let listImageView: UIImageView = {
+        let imageView = UIImageView(image: UIImage(named: "detailList"))
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+
+    let rateImageView: UIImageView = {
+        let imageView = UIImageView(image: UIImage(named: "detailRate"))
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+
+    let shareImageView: UIImageView = {
+        let imageView = UIImageView(image: UIImage(named: "detailShare"))
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    
+    let episodesButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Episodes", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 10)
+        return button
+    }()
+
+    let collectionButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Collection", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 10)
+        return button
+    }()
+
+    let moreLikeThisButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("More Like This", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 10)
+        return button
+    }()
+
+    let trailersAndMoreButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Trailers & More", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 10)
+        return button
+    }()
+
+    let menuStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.distribution = .fillEqually
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+
+    let redBarView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .red
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -96,12 +170,24 @@ class MovieDetailViewController: UIViewController {
         view.addSubview(closeButton)
         view.addSubview(airPlayButton)
         view.addSubview(titleLabel)
+        view.addSubview(releaseDateLabel)
         view.addSubview(overviewLabel)
         view.addSubview(playButton)
         view.addSubview(netflixLogoImageView)
         view.addSubview(seriesImageView)
         view.addSubview(barImageView)
         view.addSubview(downloadButton)
+        view.addSubview(listImageView)
+        view.addSubview(rateImageView)
+        view.addSubview(shareImageView)
+        
+        view.addSubview(menuStackView)
+        view.addSubview(redBarView)
+            
+        menuStackView.addArrangedSubview(episodesButton)
+        menuStackView.addArrangedSubview(collectionButton)
+        menuStackView.addArrangedSubview(moreLikeThisButton)
+        menuStackView.addArrangedSubview(trailersAndMoreButton)
         
         setupConstraints()
         
@@ -147,7 +233,12 @@ class MovieDetailViewController: UIViewController {
             downloadButton.widthAnchor.constraint(equalToConstant: 400),
             downloadButton.heightAnchor.constraint(equalToConstant: 40),
             
-            overviewLabel.topAnchor.constraint(equalTo: downloadButton.bottomAnchor, constant: 8),
+            releaseDateLabel.topAnchor.constraint(equalTo: downloadButton.bottomAnchor, constant: 8),
+            releaseDateLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 7),
+            releaseDateLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -7),
+            
+            
+            overviewLabel.topAnchor.constraint(equalTo: releaseDateLabel.bottomAnchor, constant: 5),
             overviewLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 7),
             overviewLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -7)
         ])
@@ -163,6 +254,54 @@ class MovieDetailViewController: UIViewController {
             airPlayButton.widthAnchor.constraint(equalToConstant: 24),
             airPlayButton.heightAnchor.constraint(equalToConstant: 24),
         ])
+        
+        NSLayoutConstraint.activate([
+            listImageView.topAnchor.constraint(equalTo: overviewLabel.bottomAnchor, constant: 16),
+            listImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            listImageView.widthAnchor.constraint(equalToConstant: 50),
+            listImageView.heightAnchor.constraint(equalToConstant: 50),
+                    
+            rateImageView.centerYAnchor.constraint(equalTo: listImageView.centerYAnchor),
+            rateImageView.leadingAnchor.constraint(equalTo: listImageView.trailingAnchor, constant: 40),
+            rateImageView.widthAnchor.constraint(equalToConstant: 50),
+            rateImageView.heightAnchor.constraint(equalToConstant: 50),
+                    
+            shareImageView.centerYAnchor.constraint(equalTo: listImageView.centerYAnchor),
+            shareImageView.leadingAnchor.constraint(equalTo: rateImageView.trailingAnchor, constant: 40),
+            shareImageView.widthAnchor.constraint(equalToConstant: 50),
+            shareImageView.heightAnchor.constraint(equalToConstant: 50),
+        ])
+        
+        NSLayoutConstraint.activate([
+            menuStackView.topAnchor.constraint(equalTo: shareImageView.bottomAnchor, constant: 16),
+            menuStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            menuStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            menuStackView.heightAnchor.constraint(equalToConstant: 44),
+            
+            redBarView.bottomAnchor.constraint(equalTo: episodesButton.topAnchor),
+            redBarView.leadingAnchor.constraint(equalTo: episodesButton.leadingAnchor),
+            redBarView.trailingAnchor.constraint(equalTo: episodesButton.trailingAnchor),
+            redBarView.heightAnchor.constraint(equalToConstant: 2)
+        ])
+        
+        episodesButton.addTarget(self, action: #selector(menuButtonTapped(_:)), for: .touchUpInside)
+        collectionButton.addTarget(self, action: #selector(menuButtonTapped(_:)), for: .touchUpInside)
+        moreLikeThisButton.addTarget(self, action: #selector(menuButtonTapped(_:)), for: .touchUpInside)
+        trailersAndMoreButton.addTarget(self, action: #selector(menuButtonTapped(_:)), for: .touchUpInside)
+    }
+    
+    @objc func menuButtonTapped(_ sender: UIButton) {
+        episodesButton.setTitleColor(.white, for: .normal)
+        collectionButton.setTitleColor(.white, for: .normal)
+        moreLikeThisButton.setTitleColor(.white, for: .normal)
+        trailersAndMoreButton.setTitleColor(.white, for: .normal)
+        
+        sender.setTitleColor(.red, for: .normal)
+        
+        UIView.animate(withDuration: 0.3) {
+            self.redBarView.frame.origin.x = sender.frame.origin.x
+            self.redBarView.frame.origin.y = sender.frame.origin.y - 2
+        }
     }
     
     func configureView() {
