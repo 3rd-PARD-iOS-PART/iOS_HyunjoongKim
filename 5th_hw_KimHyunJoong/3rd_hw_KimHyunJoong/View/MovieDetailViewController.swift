@@ -117,32 +117,36 @@ class MovieDetailViewController: UIViewController {
     let episodesButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Episodes", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 10)
+        button.setTitleColor(.gray, for: .normal)
+        button.setTitleColor(.white, for: .selected)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
         return button
     }()
 
     let collectionButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Collection", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 10)
+        button.setTitleColor(.gray, for: .normal)
+        button.setTitleColor(.white, for: .selected)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
         return button
     }()
 
     let moreLikeThisButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("More Like This", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 10)
+        button.setTitleColor(.gray, for: .normal)
+        button.setTitleColor(.white, for: .selected)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
         return button
     }()
 
     let trailersAndMoreButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Trailers & More", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 10)
+        button.setTitleColor(.gray, for: .normal)
+        button.setTitleColor(.white, for: .selected)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
         return button
     }()
 
@@ -194,6 +198,8 @@ class MovieDetailViewController: UIViewController {
         configureView()
         
         closeButton.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
+        episodesButton.isSelected = true
+        menuButtonTapped(episodesButton)
     }
     
     func setupConstraints() {
@@ -260,12 +266,12 @@ class MovieDetailViewController: UIViewController {
             listImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             listImageView.widthAnchor.constraint(equalToConstant: 50),
             listImageView.heightAnchor.constraint(equalToConstant: 50),
-                    
+            
             rateImageView.centerYAnchor.constraint(equalTo: listImageView.centerYAnchor),
             rateImageView.leadingAnchor.constraint(equalTo: listImageView.trailingAnchor, constant: 40),
             rateImageView.widthAnchor.constraint(equalToConstant: 50),
             rateImageView.heightAnchor.constraint(equalToConstant: 50),
-                    
+            
             shareImageView.centerYAnchor.constraint(equalTo: listImageView.centerYAnchor),
             shareImageView.leadingAnchor.constraint(equalTo: rateImageView.trailingAnchor, constant: 40),
             shareImageView.widthAnchor.constraint(equalToConstant: 50),
@@ -273,34 +279,29 @@ class MovieDetailViewController: UIViewController {
         ])
         
         NSLayoutConstraint.activate([
-            menuStackView.topAnchor.constraint(equalTo: shareImageView.bottomAnchor, constant: 16),
-            menuStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            menuStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            menuStackView.heightAnchor.constraint(equalToConstant: 44),
+            menuStackView.topAnchor.constraint(equalTo: shareImageView.bottomAnchor, constant: 8),
+            menuStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 7),
+            menuStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -7),
+            menuStackView.heightAnchor.constraint(equalToConstant: 40),
             
-            redBarView.bottomAnchor.constraint(equalTo: episodesButton.topAnchor),
+            
+            redBarView.topAnchor.constraint(equalTo: episodesButton.topAnchor),
             redBarView.leadingAnchor.constraint(equalTo: episodesButton.leadingAnchor),
             redBarView.trailingAnchor.constraint(equalTo: episodesButton.trailingAnchor),
-            redBarView.heightAnchor.constraint(equalToConstant: 2)
+            redBarView.heightAnchor.constraint(equalToConstant: 5),
+            redBarView.widthAnchor.constraint(equalToConstant: 10)
         ])
-        
-        episodesButton.addTarget(self, action: #selector(menuButtonTapped(_:)), for: .touchUpInside)
-        collectionButton.addTarget(self, action: #selector(menuButtonTapped(_:)), for: .touchUpInside)
-        moreLikeThisButton.addTarget(self, action: #selector(menuButtonTapped(_:)), for: .touchUpInside)
-        trailersAndMoreButton.addTarget(self, action: #selector(menuButtonTapped(_:)), for: .touchUpInside)
     }
     
     @objc func menuButtonTapped(_ sender: UIButton) {
-        episodesButton.setTitleColor(.white, for: .normal)
-        collectionButton.setTitleColor(.white, for: .normal)
-        moreLikeThisButton.setTitleColor(.white, for: .normal)
-        trailersAndMoreButton.setTitleColor(.white, for: .normal)
-        
-        sender.setTitleColor(.red, for: .normal)
+        episodesButton.isSelected = (sender == episodesButton)
+        collectionButton.isSelected = (sender == collectionButton)
+        moreLikeThisButton.isSelected = (sender == moreLikeThisButton)
+        trailersAndMoreButton.isSelected = (sender == trailersAndMoreButton)
         
         UIView.animate(withDuration: 0.3) {
             self.redBarView.frame.origin.x = sender.frame.origin.x
-            self.redBarView.frame.origin.y = sender.frame.origin.y - 2
+            self.redBarView.frame.size.width = sender.frame.size.width
         }
     }
     
