@@ -1,9 +1,3 @@
-//
-//  File.swift
-//  3rd_hw_KimHyunJoong
-//
-//  Created by 김현중 on 4/14/24.
-//
 import UIKit
 
 class MovieDetailViewController: UIViewController {
@@ -69,7 +63,7 @@ class MovieDetailViewController: UIViewController {
         imageView.clipsToBounds = true
         return imageView
     }()
-
+    
     let downloadButton: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "detailDownloadButton"))
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -79,35 +73,35 @@ class MovieDetailViewController: UIViewController {
     }()
     
     let netflixLogoImageView: UIImageView = {
-         let imageView = UIImageView(image: UIImage(named: "netflix_logo"))
-         imageView.translatesAutoresizingMaskIntoConstraints = false
-         return imageView
-     }()
-     
-     let seriesImageView: UIImageView = {
-         let imageView = UIImageView(image: UIImage(named: "Series"))
-         imageView.translatesAutoresizingMaskIntoConstraints = false
-         return imageView
-     }()
-     
-     let barImageView: UIImageView = {
-         let imageView = UIImageView(image: UIImage(named: "bar"))
-         imageView.translatesAutoresizingMaskIntoConstraints = false
-         return imageView
-     }()
+        let imageView = UIImageView(image: UIImage(named: "netflix_logo"))
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    
+    let seriesImageView: UIImageView = {
+        let imageView = UIImageView(image: UIImage(named: "Series"))
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    
+    let barImageView: UIImageView = {
+        let imageView = UIImageView(image: UIImage(named: "bar"))
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
     
     let listImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "detailList"))
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
-
+    
     let rateImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "detailRate"))
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
-
+    
     let shareImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "detailShare"))
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -126,44 +120,94 @@ class MovieDetailViewController: UIViewController {
         return imageView
     }()
     
+    let scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        return scrollView
+    }()
+    
+    let contentView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    let episodeStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        stackView.spacing = 30
+        return stackView
+    }()
+    
+    let detailPlayImageView: UIImageView = {
+        let imageView = UIImageView(image: UIImage(named: "detailPlay"))
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .black
         
-        view.addSubview(posterImageView)
-        view.addSubview(closeButton)
-        view.addSubview(airPlayButton)
-        view.addSubview(titleLabel)
-        view.addSubview(releaseDateLabel)
-        view.addSubview(overviewLabel)
-        view.addSubview(playButton)
-        view.addSubview(netflixLogoImageView)
-        view.addSubview(seriesImageView)
-        view.addSubview(barImageView)
-        view.addSubview(downloadButton)
-        view.addSubview(listImageView)
-        view.addSubview(rateImageView)
-        view.addSubview(shareImageView)
-        view.addSubview(menuImageView)
-        view.addSubview(seasonImageView)
+        view.addSubview(scrollView)
+        scrollView.addSubview(contentView)
+        
+        contentView.addSubview(posterImageView)
+        contentView.addSubview(closeButton)
+        contentView.addSubview(airPlayButton)
+        contentView.addSubview(titleLabel)
+        contentView.addSubview(releaseDateLabel)
+        contentView.addSubview(overviewLabel)
+        contentView.addSubview(playButton)
+        contentView.addSubview(netflixLogoImageView)
+        contentView.addSubview(seriesImageView)
+        contentView.addSubview(barImageView)
+        contentView.addSubview(downloadButton)
+        contentView.addSubview(listImageView)
+        contentView.addSubview(rateImageView)
+        contentView.addSubview(shareImageView)
+        contentView.addSubview(menuImageView)
+        contentView.addSubview(seasonImageView)
+        contentView.addSubview(episodeStackView)
+        contentView.addSubview(detailPlayImageView)
         
         setupConstraints()
         
         configureView()
+        addEpisodeViews()
         
         closeButton.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
     }
     
     func setupConstraints() {
         NSLayoutConstraint.activate([
-            posterImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            posterImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            posterImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            
+            contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
+        ])
+        
+        NSLayoutConstraint.activate([
+            posterImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            posterImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            posterImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             posterImageView.heightAnchor.constraint(equalToConstant: 215),
             
+            detailPlayImageView.centerXAnchor.constraint(equalTo: posterImageView.centerXAnchor),
+            detailPlayImageView.centerYAnchor.constraint(equalTo: posterImageView.centerYAnchor),
+            detailPlayImageView.widthAnchor.constraint(equalToConstant: 50),
+            detailPlayImageView.heightAnchor.constraint(equalToConstant: 50),
+            
             netflixLogoImageView.topAnchor.constraint(equalTo: posterImageView.bottomAnchor, constant: 5),
-            netflixLogoImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            netflixLogoImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             netflixLogoImageView.widthAnchor.constraint(equalToConstant: 30),
             netflixLogoImageView.heightAnchor.constraint(equalToConstant: 30),
             
@@ -173,50 +217,45 @@ class MovieDetailViewController: UIViewController {
             seriesImageView.heightAnchor.constraint(equalToConstant: 10),
             
             titleLabel.topAnchor.constraint(equalTo: netflixLogoImageView.bottomAnchor, constant: 1),
-            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 7),
-            titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 7),
+            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             
             barImageView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
-            barImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 7),
-            barImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -140),
+            barImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 7),
+            barImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -140),
             barImageView.heightAnchor.constraint(equalToConstant: 15),
             barImageView.widthAnchor.constraint(equalToConstant: 15),
             
             playButton.topAnchor.constraint(equalTo: barImageView.bottomAnchor, constant: 16),
-            playButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            playButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             playButton.widthAnchor.constraint(equalToConstant: 400),
             playButton.heightAnchor.constraint(equalToConstant: 40),
             
             downloadButton.topAnchor.constraint(equalTo: playButton.bottomAnchor, constant: 8),
-            downloadButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            downloadButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             downloadButton.widthAnchor.constraint(equalToConstant: 400),
             downloadButton.heightAnchor.constraint(equalToConstant: 40),
             
             releaseDateLabel.topAnchor.constraint(equalTo: downloadButton.bottomAnchor, constant: 8),
-            releaseDateLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 7),
-            releaseDateLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -7),
-            
+            releaseDateLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 7),
+            releaseDateLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -7),
             
             overviewLabel.topAnchor.constraint(equalTo: releaseDateLabel.bottomAnchor, constant: 5),
-            overviewLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 7),
-            overviewLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -7)
-        ])
-        
-        NSLayoutConstraint.activate([
-            closeButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
-            closeButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            overviewLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 7),
+            overviewLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -7),
+            
+            closeButton.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: 16),
+            closeButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             closeButton.widthAnchor.constraint(equalToConstant: 24),
             closeButton.heightAnchor.constraint(equalToConstant: 24),
             
-            airPlayButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
+            airPlayButton.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: 16),
             airPlayButton.trailingAnchor.constraint(equalTo: closeButton.leadingAnchor, constant: -8),
             airPlayButton.widthAnchor.constraint(equalToConstant: 24),
             airPlayButton.heightAnchor.constraint(equalToConstant: 24),
-        ])
-        
-        NSLayoutConstraint.activate([
+            
             listImageView.topAnchor.constraint(equalTo: overviewLabel.bottomAnchor, constant: 16),
-            listImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            listImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             listImageView.widthAnchor.constraint(equalToConstant: 45),
             listImageView.heightAnchor.constraint(equalToConstant: 50),
             
@@ -231,15 +270,19 @@ class MovieDetailViewController: UIViewController {
             shareImageView.heightAnchor.constraint(equalToConstant: 50),
             
             menuImageView.topAnchor.constraint(equalTo: listImageView.bottomAnchor, constant: 16),
-            menuImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 7),
-            menuImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -7),
+            menuImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 7),
+            menuImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -7),
             menuImageView.heightAnchor.constraint(equalToConstant: 35),
             
-            
             seasonImageView.topAnchor.constraint(equalTo: menuImageView.bottomAnchor, constant: 16),
-            seasonImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
+            seasonImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
             seasonImageView.widthAnchor.constraint(equalToConstant: 80),
-            seasonImageView.heightAnchor.constraint(equalToConstant: 17)
+            seasonImageView.heightAnchor.constraint(equalToConstant: 17),
+            
+            episodeStackView.topAnchor.constraint(equalTo: seasonImageView.bottomAnchor, constant: 16),
+            episodeStackView.leadingAnchor.constraint(equalTo: seasonImageView.leadingAnchor),
+            episodeStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            episodeStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
         ])
     }
     
@@ -256,7 +299,127 @@ class MovieDetailViewController: UIViewController {
         overviewLabel.text = movie.overview
     }
     
+    func addEpisodeViews() {
+        let episodes = [
+            ("Game Changer", "37m", "movie1", "Flying high: Chrishell reveals her latest love - Jason. In LA, the agents get real about the relationship while Christine readies her return."),
+            ("The Jade Wolf", "41m", "movie2", "Flying high: Chrishell reveals her latest love - Jason. In LA, the agents get real about the relationship while Christine readies her return."),
+            ("Into the Woods", "44m", "movie3", "Flying high: Chrishell reveals her latest love - Jason. In LA, the agents get real about the relationship while Christine readies her return."),
+            ("The Chalice", "42m", "movie4", "Flying high: Chrishell reveals her latest love - Jason. In LA, the agents get real about the relationship while Christine readies her return."),
+            ("The Brink", "40m", "movie5", "Flying high: Chrishell reveals her latest love - Jason. In LA, the agents get real about the relationship while Christine readies her return.")
+        ]
+        for episode in episodes {
+            let episodeView = EpisodeView()
+            episodeView.configure(title: episode.0, duration: episode.1, imageName: episode.2, description: episode.3)
+            episodeStackView.addArrangedSubview(episodeView)
+        }
+    }
+    
     @objc func closeButtonTapped() {
         dismiss(animated: true, completion: nil)
+    }
+}
+
+class EpisodeView: UIView {
+    let thumbnailImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 5
+        return imageView
+    }()
+    
+    let titleLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.boldSystemFont(ofSize: 16)
+        label.textColor = .white
+        return label
+    }()
+    
+    let durationLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.systemFont(ofSize: 14)
+        label.textColor = .gray
+        return label
+    }()
+    
+    let playImageView: UIImageView = {
+        let imageView = UIImageView(image: UIImage(named: "episodePlay"))
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+
+    let descriptionLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.systemFont(ofSize: 12)
+        label.textColor = .white
+        label.numberOfLines = 0
+        return label
+    }()
+    
+    let detailEpisodePlayImageView: UIImageView = {
+        let imageView = UIImageView(image: UIImage(named: "detailEpisodePlay"))
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        addSubview(thumbnailImageView)
+        addSubview(titleLabel)
+        addSubview(durationLabel)
+        addSubview(playImageView)
+        addSubview(descriptionLabel)
+        addSubview(detailEpisodePlayImageView)
+        
+        setupConstraints()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setupConstraints() {
+        NSLayoutConstraint.activate([
+            thumbnailImageView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            thumbnailImageView.topAnchor.constraint(equalTo: topAnchor),
+            thumbnailImageView.widthAnchor.constraint(equalToConstant: 120),
+            thumbnailImageView.heightAnchor.constraint(equalToConstant: 65),
+            
+            detailEpisodePlayImageView.centerXAnchor.constraint(equalTo: thumbnailImageView.centerXAnchor),
+            detailEpisodePlayImageView.centerYAnchor.constraint(equalTo: thumbnailImageView.centerYAnchor),
+            detailEpisodePlayImageView.widthAnchor.constraint(equalToConstant: 30),
+            detailEpisodePlayImageView.heightAnchor.constraint(equalToConstant: 30),
+            
+            titleLabel.leadingAnchor.constraint(equalTo: thumbnailImageView.trailingAnchor, constant: 16),
+            titleLabel.topAnchor.constraint(equalTo: thumbnailImageView.topAnchor, constant: 10),
+            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            
+            durationLabel.leadingAnchor.constraint(equalTo: thumbnailImageView.trailingAnchor, constant: 16),
+            durationLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4),
+            
+            playImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            playImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            playImageView.widthAnchor.constraint(equalToConstant: 24),
+            playImageView.heightAnchor.constraint(equalToConstant: 24),
+        ])
+        
+        NSLayoutConstraint.activate([
+            descriptionLabel.topAnchor.constraint(equalTo: thumbnailImageView.bottomAnchor, constant: 8),
+            descriptionLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
+            descriptionLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
+            descriptionLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8)
+        ])
+    }
+    
+    func configure(title: String, duration: String, imageName: String, description: String) {
+        titleLabel.text = title
+        durationLabel.text = duration
+        thumbnailImageView.image = UIImage(named: imageName)
+        descriptionLabel.text = description
     }
 }
