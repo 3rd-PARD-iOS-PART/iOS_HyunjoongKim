@@ -12,6 +12,11 @@
 3. 'Search' 탭은 TMDB의 popular movies를 불러오는 API를 사용하여 <br>불러온 영화 정보들을 하나의 tableView안의 각 셀들로 구성되게 해놓았으며 <br>검색을 통해 cell이 반환됩니다.
 <img width="559" alt="스크린샷 2024-04-12 오후 10 07 41" src="https://github.com/3rd-PARD-iOS-PART/iOS_HyunjoongKim/assets/143365392/f004d6a1-eb95-447d-944d-466ea11fd150">
 
+3-2. 'Search' 탭에서 하나를 선택하게 되면 그에 대한 정보와 시즌, 에피소드 정보들이 보여지는 창이 뜨게 되며, 오른쪽 상단의 'X'버튼을 누르게 되면 다시 초기 'Search' 탭에 보여지는 화면으로 돌아오게 됩니다.
+<img width="558" alt="스크린샷 2024-04-30 오전 10 10 12" src="https://github.com/3rd-PARD-iOS-PART/iOS_HyunjoongKim/assets/143365392/b5a43787-3274-4893-9cb2-6a447f67fc15">
+<img width="558" alt="스크린샷 2024-04-30 오전 10 10 16" src="https://github.com/3rd-PARD-iOS-PART/iOS_HyunjoongKim/assets/143365392/d66945ae-a1fb-4950-a318-6210d44042a6">
+
+
 
 4. 'Coming Soon' 탭은 TMDB의 upcoming movies를 불러오는 API를 사용하여 <br> 불러온 영화 정보들을 하나의 tableView안의 각 셀들로 구성되게 해놓았으며 <br> 영화 포스터 사진, Api에서 불러온 released date, overview, 그리고 장르 id에 맞는 장르까지 하나의 셀을 이루게 했습니다.
 <img width="559" alt="스크린샷 2024-04-12 오후 10 07 58" src="https://github.com/3rd-PARD-iOS-PART/iOS_HyunjoongKim/assets/143365392/b9c1c06d-c692-40e6-be04-660068f083b2">
