@@ -178,6 +178,7 @@ class MovieDetailViewController: UIViewController {
         configureView()
         addEpisodeViews()
         
+        // 닫기 버튼에 대한 액션 추가
         closeButton.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
     }
     
@@ -310,15 +311,18 @@ class MovieDetailViewController: UIViewController {
         for episode in episodes {
             let episodeView = EpisodeView()
             episodeView.configure(title: episode.0, duration: episode.1, imageName: episode.2, description: episode.3)
+            // 에피소드 뷰를 스택뷰에 추가
             episodeStackView.addArrangedSubview(episodeView)
         }
     }
     
+    // 닫기 버튼 탭 시 호출되는 메서드
     @objc func closeButtonTapped() {
         dismiss(animated: true, completion: nil)
     }
 }
 
+// 에피소드 뷰를 나타내는 커스텀 뷰
 class EpisodeView: UIView {
     let thumbnailImageView: UIImageView = {
         let imageView = UIImageView()
@@ -369,6 +373,7 @@ class EpisodeView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        // 에피소드 뷰에 UI 요소들 추가
         addSubview(thumbnailImageView)
         addSubview(titleLabel)
         addSubview(durationLabel)
@@ -416,6 +421,7 @@ class EpisodeView: UIView {
         ])
     }
     
+    // 에피소드 뷰 구성
     func configure(title: String, duration: String, imageName: String, description: String) {
         titleLabel.text = title
         durationLabel.text = duration
