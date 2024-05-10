@@ -56,9 +56,9 @@ class DetailViewController: UIViewController {
     }
     
     @objc func deleteButtonTapped() {
-        let alertController = UIAlertController(title: "삭제", message: "정말로 삭제하시겠습니까?", preferredStyle: .alert)
+        let alertController = UIAlertController(title: "정말로 삭제하시겠습니까?", message: "삭제한 내용은 다시 되돌릴 수 없습니다.", preferredStyle: .alert)
         let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
-        let deleteAction = UIAlertAction(title: "삭제", style: .destructive) { [weak self] _ in
+        let deleteAction = UIAlertAction(title: "확인", style: .destructive) { [weak self] _ in
             guard let pard = self?.pard else { return }
             self?.apiService.deletePard(id: pard.id) { error in
                 if let error = error {
