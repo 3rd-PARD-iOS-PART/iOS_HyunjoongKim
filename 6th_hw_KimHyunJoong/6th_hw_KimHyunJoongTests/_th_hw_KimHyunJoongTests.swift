@@ -2,7 +2,7 @@
 //  _th_hw_KimHyunJoongTests.swift
 //  6th_hw_KimHyunJoongTests
 //
-//  Created by 김현중 on 5/9/24.
+//  Created by 김현중 on 5/10/24.
 //
 
 import XCTest
