@@ -8,7 +8,7 @@
 import Foundation
 
 class APIService {
-    let baseURL = "https://pard-host.onrender.com"
+    let baseURL = "http://172.18.135.182:8080"
     
     func getPards(completion: @escaping ([Pard]?, Error?) -> Void) {
         guard let url = URL(string: "\(baseURL)/pard") else { return }
@@ -81,5 +81,25 @@ class APIService {
         URLSession.shared.dataTask(with: request) { _, _, error in
             completion(error)
         }.resume()
+    }
+    
+    func editPard(pard: Pard, completion: @escaping (Error?) -> Void) {
+        guard let url = URL(string: "\(baseURL)/pard/\(pard.id)") else { return }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "PATCH"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        do {
+            let encoder = JSONEncoder()
+            let data = try encoder.encode(pard)
+            request.httpBody = data
+            
+            URLSession.shared.dataTask(with: request) { _, _, error in
+                completion(error)
+            }.resume()
+        } catch {
+            completion(error)
+        }
     }
 }
