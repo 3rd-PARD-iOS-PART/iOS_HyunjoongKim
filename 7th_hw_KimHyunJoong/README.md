@@ -1,9 +1,12 @@
-# 6차 과제 UrlSession
+# 7차 과제 UrlSession / filtering
 
 ### 홈화면
 
 홈화면은 아래 사진과 같이 API로 불러온 정보들을 테이블 뷰의 각 셀로 보여준다.
-<img width="514" alt="스크린샷 2024-05-10 오후 6 46 06" src="https://github.com/3rd-PARD-iOS-PART/iOS_HyunjoongKim/assets/143365392/dcc8ede3-9c91-41c6-be08-8b7bf559579b">
+<img width="561" alt="스크린샷 2024-05-13 오후 7 36 14" src="https://github.com/3rd-PARD-iOS-PART/iOS_HyunjoongKim/assets/143365392/d96e3ec4-c7ae-4f33-bdda-9078f42e2e4e">
+
+위는 all, iOS, server, web 버튼이 컬렉션 뷰 안에 들어가 있으며 선택한 버튼에 맞는 파트원들의 정보들이 필터링되어 보여지게 된다.
+<img width="561" alt="스크린샷 2024-05-13 오후 7 37 14" src="https://github.com/3rd-PARD-iOS-PART/iOS_HyunjoongKim/assets/143365392/24e584f3-a8ff-42d3-b0e6-14c942440380">
 
 ### 추가하기
 
