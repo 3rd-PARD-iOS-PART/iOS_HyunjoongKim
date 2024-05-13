@@ -8,18 +8,19 @@
 import Foundation
 
 class APIService {
-    let baseURL = "http://172.18.135.182:8080"
+    let baseURL = "https://pard-host.onrender.com"
     
-    func getPards(completion: @escaping ([Pard]?, Error?) -> Void) {
-        guard let url = URL(string: "\(baseURL)/pard") else { return }
-        
+    func getPards(from url: URL, completion: @escaping ([Pard]?, Error?) -> Void) {
         URLSession.shared.dataTask(with: url) { data, _, error in
             if let error = error {
                 completion(nil, error)
                 return
             }
             
-            guard let data = data else { return }
+            guard let data = data else {
+                completion(nil, NSError(domain: "com.example.app", code: 0, userInfo: [NSLocalizedDescriptionKey: "No data received"]))
+                return
+            }
             
             do {
                 let decoder = JSONDecoder()

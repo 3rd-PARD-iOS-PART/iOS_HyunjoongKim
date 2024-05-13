@@ -1,17 +1,28 @@
 import UIKit
 
-class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate {
     
     let tableView = UITableView()
+    let collectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        return collectionView
+    }()
+    
     var pards: [Pard] = []
     let apiService = APIService()
     
+    let filterOptions = ["all", "iOS", "server", "web"]
+    var selectedFilter = "all"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         title = "UrlSession"
         view.backgroundColor = .white
         
+        setupCollectionView()
         setupTableView()
         setupNavigationBar()
         fetchPards()
@@ -24,10 +35,29 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            tableView.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: 8),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        ])
+    }
+    
+    func setupCollectionView() {
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "filterCell")
+        view.addSubview(collectionView)
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        layout.itemSize = CGSize(width: 60, height: 30)
+        layout.minimumInteritemSpacing = 10
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        collectionView.collectionViewLayout = layout
+        NSLayoutConstraint.activate([
+            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            collectionView.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
     
@@ -38,7 +68,15 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     func fetchPards() {
-        apiService.getPards { [weak self] pards, error in
+        var urlString = "https://pard-host.onrender.com/pard"
+        if selectedFilter != "all" {
+            urlString += "?part=\(selectedFilter)"
+        }
+        guard let url = URL(string: urlString) else {
+            print("Invalid URL")
+            return
+        }
+        apiService.getPards(from: url) { [weak self] (pards, error) in
             if let error = error {
                 print("Error fetching pards: \(error.localizedDescription)")
                 return
@@ -66,6 +104,36 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let detailViewController = DetailViewController()
         detailViewController.pard = selectedPard
         navigationController?.pushViewController(detailViewController, animated: true)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return filterOptions.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "filterCell", for: indexPath)
+        let filterOption = filterOptions[indexPath.item]
+        
+        for subview in cell.contentView.subviews {
+            subview.removeFromSuperview()
+        }
+        
+        let label = UILabel(frame: cell.contentView.bounds)
+        label.text = filterOption
+        label.textAlignment = .center
+        cell.contentView.addSubview(label)
+        
+        cell.contentView.backgroundColor = (filterOption == selectedFilter) ? .lightGray : .white
+        cell.contentView.layer.cornerRadius = 15
+        cell.contentView.layer.masksToBounds = true
+        
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        selectedFilter = filterOptions[indexPath.item]
+        collectionView.reloadData()
+        fetchPards()
     }
     
     @objc func addButtonTapped() {
