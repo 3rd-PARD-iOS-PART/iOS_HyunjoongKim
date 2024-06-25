@@ -6,5 +6,3 @@ Netflix Clone Coding Repo.
 
 macOS: Sonoma 14.4.1
 Xcode: Version 15.3 (15E204a)
-
-한동대학교 21학번 김현중 작성
